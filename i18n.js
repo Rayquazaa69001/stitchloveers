@@ -337,6 +337,25 @@ window.PPP_LANGUE = (function () {
   }
   return l || "en";
 })();
+/* Devise : fuseau horaire d'abord (= pays réel), puis région de la langue. Stripe facture dans la même devise selon le pays. */
+window.PPP_DEVISE = (function () {
+  var tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+  var CA = ["Toronto","Vancouver","Montreal","Edmonton","Winnipeg","Halifax","Regina","St_Johns","Moncton","Whitehorse","Yellowknife","Iqaluit","Glace_Bay","Goose_Bay","Swift_Current","Dawson_Creek","Rankin_Inlet","Cambridge_Bay","Inuvik"];
+  if (tz === "Europe/London" || tz === "Europe/Belfast") return "GBP";
+  if (tz === "Europe/Zurich") return "CHF";
+  var US = ["New_York","Chicago","Denver","Los_Angeles","Phoenix","Anchorage","Detroit","Boise","Juneau","Sitka","Nome","Adak","Menominee","Metlakatla","Yakutat","Indiana","Kentucky","North_Dakota","Louisville","Indianapolis","Fort_Wayne","Knox_IN","Shiprock"];
+  if (tz === "Pacific/Honolulu" || tz.indexOf("US/") === 0) return "USD";
+  if (tz.indexOf("America/") === 0) { var v = tz.split("/")[1]; if (CA.indexOf(v) >= 0) return "CAD"; if (US.indexOf(v) >= 0) return "USD"; return "EUR"; }
+  if (tz.indexOf("Europe/") === 0) return "EUR";
+  var r = String((navigator.languages && navigator.languages[0]) || navigator.language || "").split("-")[1] || "";
+  r = r.toUpperCase();
+  if (r === "US") return "USD"; if (r === "GB") return "GBP"; if (r === "CH") return "CHF"; if (r === "CA") return "CAD";
+  return "EUR";
+})();
+window.prixTexte = function () {
+  try { return new Intl.NumberFormat(PPP_LANGUE + "-" + ({USD:"US",GBP:"GB",CHF:"CH",CAD:"CA"}[PPP_DEVISE] || PPP_LANGUE.toUpperCase()), { style: "currency", currency: PPP_DEVISE, maximumFractionDigits: 0 }).format(29); }
+  catch (e) { return PPP_DEVISE === "EUR" ? "29 €" : "29 " + PPP_DEVISE; }
+};
 window.T = function (k) { var d = PPP_TEXTES[PPP_LANGUE] || PPP_TEXTES.fr; return d[k] != null ? d[k] : (PPP_TEXTES.fr[k] != null ? PPP_TEXTES.fr[k] : k); };
 window.appliquerTextes = function (racine) {
   (racine || document).querySelectorAll("[data-t]").forEach(function (e) { e.textContent = T(e.getAttribute("data-t")); });

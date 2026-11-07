@@ -175,7 +175,10 @@
   .collant.vu{transform:none}
   .collant b{font-family:Montserrat;font-weight:900;font-size:14px;line-height:1.2}
   .collant b span{display:block;font-weight:800;font-size:12px;opacity:.7}
-  .collant .btn{padding:12px 16px;font-size:15px;box-shadow:3px 3px 0 var(--magenta);border-color:var(--jaune)}
+  .collant .btn{padding:12px 16px;font-size:15px;box-shadow:3px 3px 0 var(--magenta);border-color:var(--jaune);white-space:nowrap;flex:none}
+  .collant b{min-width:0}
+  .collant .collant-prix{display:block;font-size:20px;opacity:1;color:var(--jaune);white-space:nowrap}
+  @media(max-width:360px){.collant{padding-left:14px}.collant .btn{padding:12px 12px;font-size:14px}.collant .collant-prix{font-size:18px}}
   @media(min-width:900px){.collant{left:auto;width:420px;right:24px;bottom:24px}}
 
   .toast{position:fixed;left:50%;top:20px;transform:translate(-50%,-150%);background:var(--encre);color:var(--creme);padding:12px 18px;border-radius:12px;font-weight:700;z-index:60;transition:transform .3s;max-width:90vw;text-align:center}
@@ -231,7 +234,7 @@
         <h1><span data-t="h1_a"></span> <span class="surligne" data-t="h1_b"></span> <span data-t="h1_c"></span> <span class="moi" data-t="h1_d"></span></h1>
         <p class="sous" data-t="sous"></p>
         <div class="actions">
-          <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement><span data-t="cta"></span> <span class="prix">29 €<span data-t="par_mois"></span></span></a>
+          <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement><span data-t="cta"></span> <span class="prix" data-prix="mois"></span></a>
           <a class="btn blanc" href="#resultat" data-t="cta2"></a>
         </div>
         <p class="petit" data-t="petit"></p>
@@ -303,7 +306,7 @@
       <div>
         <span class="tag" data-t="prix_tag"></span>
         <h2 data-t="prix_h2"></h2>
-        <div class="montant">29 € <small data-t="par_mois"></small></div>
+        <div class="montant"><span data-prix></span> <small data-t="par_mois"></small></div>
         <p data-t="prix_p"></p>
       </div>
       <div>
@@ -313,7 +316,7 @@
           <li><span class="ic">✓</span><div><b data-t="i3"></b><span data-t="i3p"></span></div></li>
           <li><span class="ic">✓</span><div><b data-t="i4"></b><span data-t="i4p"></span></div></li>
         </ul>
-        <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement style="width:100%;background:var(--encre);color:var(--jaune);box-shadow:6px 6px 0 var(--magenta)"><span data-t="prix_btn"></span> <span class="prix" style="background:var(--jaune);color:var(--encre)">29 €<span data-t="par_mois"></span></span></a>
+        <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement style="width:100%;background:var(--encre);color:var(--jaune);box-shadow:6px 6px 0 var(--magenta)"><span data-t="prix_btn"></span> <span class="prix" style="background:var(--jaune);color:var(--encre)" data-prix="mois"></span></a>
         <p class="petit" style="margin-top:12px" data-t="prix_note"></p>
       </div>
     </div>
@@ -343,13 +346,14 @@
 </div>
 
 <div class="collant" id="collant">
-  <b><span data-t="collant_t" style="display:block;font-size:14px;opacity:1"></span><span data-t="collant_s"></span></b>
-  <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement><span data-t="cta"></span> · 29 €</a>
+  <b><span class="collant-prix" data-prix="mois"></span><span data-t="collant_s"></span></b>
+  <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement><span data-t="cta"></span></a>
 </div>
 
 <script src="i18n.js"></script>
 <script>
   function apresLangue(){
+    document.querySelectorAll("[data-prix]").forEach(e => { e.textContent = prixTexte() + (e.dataset.prix === "mois" ? T("par_mois") : ""); });
     document.title = T("doc_titre"); const md = document.querySelector('meta[name="description"]'); if (md) md.content = T("doc_desc");
     const b = T("bande"); const piste = document.getElementById("piste");
     piste.innerHTML = b.concat(b).map(x => "<span>" + x + "</span>").join("");
