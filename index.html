@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan par Plan — crée des vidéos Roblox avec l'IA</title>
+<meta name="description" content="Raconte ton histoire : l'atelier Plan par Plan l'écrit, la construit dans Roblox Studio, la filme et la monte avec toi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --creme:#FFF4DE; --creme2:#FBE7C2; --encre:#17131F; --encre2:#3A3346;
+    --jaune:#FFD21F; --magenta:#FF2D8E; --vert:#22D35A; --ciel:#5BC3F5;
+    --r:22px; --ombre:6px 6px 0 var(--encre);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;overflow-x:clip}
+  body{overflow-x:clip}
+  body{background:var(--creme);color:var(--encre);font-family:"DM Sans",system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  .wrap{width:min(1120px,100% - 40px);margin-inline:auto}
+  h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;line-height:1.02;letter-spacing:-.02em}
+  .tag{font-family:Montserrat,sans-serif;font-weight:900;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+
+  /* Barre du haut */
+  .top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Montserrat,sans-serif;font-weight:900;letter-spacing:.06em;font-size:15px}
+  .logo svg{width:34px;height:34px}
+  .top .mini{font-family:Montserrat;font-weight:900;font-size:13px;text-decoration:none;border:2.5px solid var(--encre);border-radius:999px;padding:8px 14px;background:#fff;box-shadow:3px 3px 0 var(--encre)}
+
+  /* Bouton */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:Montserrat,sans-serif;font-weight:900;font-size:17px;text-decoration:none;color:var(--encre);background:var(--jaune);border:3px solid var(--encre);border-radius:16px;padding:17px 24px;box-shadow:var(--ombre);transition:transform .12s,box-shadow .12s;cursor:pointer}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--encre)}
+  .btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--encre)}
+  .btn.blanc{background:#fff}
+  .btn .prix{background:var(--encre);color:var(--jaune);border-radius:9px;padding:3px 9px;font-size:15px}
+
+  /* Hero */
+  .hero{display:grid;gap:34px;padding:18px 0 60px;align-items:center}
+  @media(min-width:900px){.hero{grid-template-columns:1.15fr .85fr;padding:40px 0 90px}}
+  .kicker{display:inline-flex;gap:8px;align-items:center;background:var(--encre);color:var(--creme);border-radius:999px;padding:7px 14px 7px 9px}
+  .kicker i{width:10px;height:10px;border-radius:50%;background:var(--magenta);box-shadow:0 0 0 3px rgba(255,45,142,.3);animation:rec 1.2s infinite}
+  @keyframes rec{50%{opacity:.25}}
+  .hero h1{font-size:clamp(44px,11vw,88px);margin:18px 0 18px}
+  .hero h1 .surligne{position:relative;white-space:nowrap}
+  .hero h1 .surligne::after{content:"";position:absolute;left:-.08em;right:-.08em;bottom:.04em;height:.36em;background:var(--jaune);z-index:-1;border-radius:6px;transform:rotate(-1.2deg)}
+  .hero h1 .moi{color:var(--magenta)}
+  .hero p.sous{font-size:19px;max-width:560px;color:var(--encre2)}
+  .hero .actions{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0 14px}
+  .petit{font-size:14px;color:var(--encre2)}
+
+  /* Téléphone */
+  .scene{position:relative;justify-self:center;width:min(330px,82vw)}
+  @media(max-width:899px){.hero{gap:22px;padding-top:4px}.scene{order:-1;width:min(232px,62vw)}.tel{border-width:8px;border-radius:30px;box-shadow:10px 10px 0 var(--magenta)}.post{font-size:11px;padding:6px 9px}.post.a{left:-58px}.post.b{right:-58px}.post.c{display:none}.post.b{top:58%;right:-70px}.post.a{top:12%}.son{font-size:11px;padding:6px 10px}}
+  .tel{position:relative;aspect-ratio:9/16;border-radius:38px;border:10px solid var(--encre);background:var(--encre);overflow:hidden;box-shadow:14px 14px 0 var(--magenta)}
+  .tel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+  .son{position:absolute;left:12px;bottom:14px;z-index:4;font-family:Montserrat;font-weight:900;font-size:12px;border:2.5px solid var(--encre);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;box-shadow:3px 3px 0 var(--encre)}
+  .tel .ui{position:absolute;right:10px;bottom:90px;display:flex;flex-direction:column;gap:16px;z-index:2}
+  .tel .ui span{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.88);display:grid;place-items:center;font-size:16px}
+  .tel .tc{position:absolute;top:12px;left:12px;z-index:2;font-family:Montserrat;font-weight:900;font-size:11px;color:#fff;background:rgba(0,0,0,.55);border-radius:6px;padding:4px 7px;letter-spacing:.08em}
+  .tel .tc b{color:var(--magenta)}
+  .post{position:absolute;z-index:3;font-family:Montserrat;font-weight:900;font-size:13px;background:#fff;border:3px solid var(--encre);border-radius:12px;padding:8px 11px;box-shadow:4px 4px 0 var(--encre);white-space:nowrap}
+  .post.a{left:-26px;top:16%;transform:rotate(-6deg)}
+  .post.b{right:-22px;top:48%;transform:rotate(5deg);background:var(--vert)}
+  .post.c{left:-14px;bottom:15%;transform:rotate(-3deg);background:var(--jaune)}
+
+  /* Bandeau défilant */
+  .bande{background:var(--encre);color:var(--creme);border-block:3px solid var(--encre);overflow:hidden;transform:rotate(-1.5deg);margin:10px -20px 0}
+  .bande .piste{display:flex;gap:34px;width:max-content;padding:15px 0;animation:defile 26s linear infinite;font-family:Montserrat;font-weight:900;font-size:20px;letter-spacing:.05em}
+  .bande .piste span:nth-child(3n+1)::after{content:"●";color:var(--magenta);margin-left:34px}
+  .bande .piste span:nth-child(3n+2)::after{content:"●";color:var(--jaune);margin-left:34px}
+  .bande .piste span:nth-child(3n)::after{content:"●";color:var(--vert);margin-left:34px}
+  @keyframes defile{to{transform:translateX(-50%)}}
+
+  section{padding:84px 0 0}
+  .titre{max-width:760px;margin-bottom:34px}
+  .titre .tag{color:var(--magenta)}
+  .titre h2{font-size:clamp(34px,7vw,58px);margin:10px 0 14px}
+  .titre p{font-size:18px;color:var(--encre2)}
+
+  /* Galerie */
+  .galerie{display:grid;grid-auto-flow:column;grid-auto-columns:min(250px,68vw);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 6px 26px;margin-inline:-6px;scrollbar-width:none}
+  .galerie::-webkit-scrollbar{display:none}
+  @media(min-width:1000px){.galerie{grid-auto-flow:row;grid-template-columns:repeat(4,1fr);overflow:visible}}
+  .carte-img{scroll-snap-align:start;background:#fff;border:3px solid var(--encre);border-radius:var(--r);overflow:hidden;box-shadow:var(--ombre)}
+  .carte-img video{aspect-ratio:9/13;width:100%;object-fit:cover;object-position:center 30%;border-bottom:3px solid var(--encre);display:block;background:#000}
+  .carte-img div{padding:14px 16px 18px}
+  .carte-img h3{font-size:20px;margin-bottom:4px}
+  .carte-img p{font-size:15px;color:var(--encre2)}
+
+  /* Pellicule des étapes */
+  .pellicule{background:var(--encre);border-radius:28px;padding:30px 0;position:relative;overflow:hidden}
+  .pellicule::before,.pellicule::after{content:"";position:absolute;left:0;right:0;height:14px;background:repeating-linear-gradient(90deg,transparent 0 14px,var(--creme) 14px 30px,transparent 30px 44px);opacity:.9}
+  .pellicule::before{top:9px}.pellicule::after{bottom:9px}
+  .etapes{display:grid;grid-auto-flow:column;grid-auto-columns:min(270px,78vw);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:16px 20px;scrollbar-width:none}
+  .etapes::-webkit-scrollbar{display:none}
+  .etape{scroll-snap-align:center;background:var(--creme);border-radius:16px;padding:20px 20px 22px;min-height:250px;display:flex;flex-direction:column}
+  .etape .num{font-family:Montserrat;font-weight:900;font-size:13px;letter-spacing:.12em;display:flex;justify-content:space-between;align-items:center}
+  .etape .num em{font-style:normal;background:var(--encre);color:var(--creme);border-radius:6px;padding:3px 8px}
+  .etape h3{font-size:27px;margin:16px 0 8px}
+  .etape p{font-size:15.5px;color:var(--encre2)}
+  .etape:nth-child(3n+1) .num em{background:var(--magenta)}
+  .etape:nth-child(3n+2) .num em{background:var(--ciel);color:var(--encre)}
+  .etape:nth-child(3n) .num em{background:var(--vert);color:var(--encre)}
+  .glisse{color:var(--creme);opacity:.7;font-size:13px;text-align:center;margin-top:4px}
+  @media(min-width:1000px){.etapes{grid-auto-flow:row;grid-template-columns:repeat(4,1fr);overflow:visible;padding:16px 24px}}
+  @media(min-width:1000px){.glisse{display:none}}
+
+  /* Contenu du pack */
+  .pack{display:grid;gap:22px}
+  @media(min-width:900px){.pack{grid-template-columns:1fr 1fr}}
+  .boite{background:#fff;border:3px solid var(--encre);border-radius:var(--r);box-shadow:var(--ombre);padding:24px}
+  .boite h3{font-size:26px;margin-bottom:14px}
+  .liste{list-style:none;display:grid;gap:12px}
+  .liste li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+  .liste .ic{width:30px;height:30px;border-radius:9px;border:2.5px solid var(--encre);display:grid;place-items:center;font-family:Montserrat;font-weight:900;font-size:13px;background:var(--jaune)}
+  .liste li:nth-child(2n) .ic{background:var(--ciel)}
+  .liste li:nth-child(3n) .ic{background:var(--vert)}
+  .liste b{font-family:Montserrat;font-weight:800;font-size:15px}
+  .liste span{display:block;font-size:15px;color:var(--encre2)}
+  .code{background:var(--encre);color:#E9E3F5;border-radius:var(--r);padding:22px;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.7;border:3px solid var(--encre);box-shadow:6px 6px 0 var(--magenta);overflow-x:auto}
+  .code .c{color:#8C83A0}.code .k{color:var(--jaune)}.code .v{color:var(--vert)}.code .m{color:var(--magenta)}
+  .chat{margin-top:22px;display:grid;gap:10px}
+  .bulle{border:3px solid var(--encre);border-radius:18px;padding:12px 15px;font-size:15px;max-width:92%}
+  .bulle.toi{background:var(--jaune);justify-self:end;border-bottom-right-radius:4px}
+  .bulle.claude{background:#fff;border-bottom-left-radius:4px}
+  .bulle small{display:block;font-family:Montserrat;font-weight:900;font-size:11px;letter-spacing:.1em;margin-bottom:3px;opacity:.6}
+
+  /* Troupe */
+  .troupe{display:grid;gap:26px;align-items:center}
+  @media(min-width:900px){.troupe{grid-template-columns:.9fr 1.1fr}}
+  .troupe figure{border:3px solid var(--encre);border-radius:var(--r);overflow:hidden;box-shadow:var(--ombre);background:#fff;max-height:560px}
+  .troupe figure img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .troupe figcaption{font-size:13px;padding:10px 14px;border-top:3px solid var(--encre);color:var(--encre2)}
+  .regles{display:grid;gap:12px;margin-top:20px}
+  .regle{display:flex;gap:12px;align-items:flex-start;background:var(--creme2);border-radius:14px;padding:12px 14px}
+  .regle strong{font-family:Montserrat;font-weight:900;font-size:14px;background:var(--encre);color:var(--creme);border-radius:7px;padding:2px 7px;white-space:nowrap}
+
+  /* Prérequis */
+  .prereq{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .pr{border:3px dashed var(--encre);border-radius:18px;padding:18px}
+  .pr .tag{color:var(--encre2)}
+  .pr h3{font-size:20px;margin:6px 0 4px}
+  .pr p{font-size:15px;color:var(--encre2)}
+
+  /* Offre */
+  .offre{background:var(--jaune);border:3px solid var(--encre);border-radius:32px;box-shadow:10px 10px 0 var(--encre);padding:34px 24px;display:grid;gap:26px;position:relative;overflow:hidden}
+  @media(min-width:900px){.offre{grid-template-columns:1.1fr .9fr;padding:46px}}
+  .offre h2{font-size:clamp(36px,7vw,60px)}
+  .offre .montant{font-family:"Bricolage Grotesque";font-weight:800;font-size:76px;line-height:1;margin:14px 0 4px}
+  .offre .montant small{font-size:22px;font-family:"DM Sans";font-weight:700}
+  .offre .liste .ic{background:#fff}
+  @media(max-width:899px){.offre{padding-top:66px}}
+  .tampon{position:absolute;right:-30px;top:22px;transform:rotate(12deg);background:var(--magenta);color:#fff;font-family:Montserrat;font-weight:900;font-size:13px;letter-spacing:.12em;padding:8px 46px;border-block:3px solid var(--encre)}
+
+  /* FAQ */
+  .faq{display:grid;gap:12px;max-width:820px}
+  details{background:#fff;border:3px solid var(--encre);border-radius:18px;padding:0 20px}
+  summary{cursor:pointer;list-style:none;font-family:"Bricolage Grotesque";font-weight:800;font-size:20px;padding:18px 34px 18px 0;position:relative}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:0;top:12px;font-size:30px;font-family:Montserrat;font-weight:900;transition:transform .2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{padding:0 0 18px;color:var(--encre2);font-size:16px}
+
+  footer{margin-top:90px;border-top:3px solid var(--encre);padding:34px 0 120px;font-size:14px;color:var(--encre2)}
+  footer .ligne{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:12px}
+
+  /* Barre d'achat collante (mobile) */
+  .collant{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--encre);color:var(--creme);border-radius:18px;padding:10px 10px 10px 18px;box-shadow:0 10px 30px rgba(23,19,31,.35);transform:translateY(140%);transition:transform .35s}
+  .collant.vu{transform:none}
+  .collant b{font-family:Montserrat;font-weight:900;font-size:14px;line-height:1.2}
+  .collant b span{display:block;font-weight:800;font-size:12px;opacity:.7}
+  .collant .btn{padding:12px 16px;font-size:15px;box-shadow:3px 3px 0 var(--magenta);border-color:var(--jaune)}
+  @media(min-width:900px){.collant{left:auto;width:420px;right:24px;bottom:24px}}
+
+  .toast{position:fixed;left:50%;top:20px;transform:translate(-50%,-150%);background:var(--encre);color:var(--creme);padding:12px 18px;border-radius:12px;font-weight:700;z-index:60;transition:transform .3s;max-width:90vw;text-align:center}
+  .toast.on{transform:translate(-50%,0)}
+
+  .apparait{opacity:0;transform:translateY(22px);transition:opacity .6s,transform .6s}
+  .apparait.vu{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.apparait{opacity:1;transform:none}}
+  .langues{display:flex;gap:4px;background:#fff;border:2.5px solid var(--encre);border-radius:999px;padding:3px}
+  .langues button{font-family:Montserrat;font-weight:900;font-size:11px;border:0;background:none;border-radius:999px;padding:5px 7px;cursor:pointer;color:var(--encre2)}
+  .langues button.on{background:var(--encre);color:var(--jaune)}
+  .top .droite{display:flex;gap:10px;align-items:center}
+  @media(max-width:520px){.top .mini{display:none}}
+  .etapes3{display:grid;gap:18px}
+  @media(min-width:900px){.etapes3{grid-template-columns:repeat(3,1fr)}}
+  .e3{background:#fff;border:3px solid var(--encre);border-radius:var(--r);box-shadow:var(--ombre);padding:24px}
+  .e3 .n{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:12px;border:3px solid var(--encre);font-family:Montserrat;font-weight:900;font-size:20px;background:var(--jaune)}
+  .e3:nth-child(2) .n{background:var(--ciel)} .e3:nth-child(3) .n{background:var(--vert)}
+  .e3 h3{font-size:26px;margin:16px 0 8px}
+  .e3 p{color:var(--encre2)}
+  .demo{margin-top:26px;background:var(--encre);border-radius:28px;padding:22px;display:grid;gap:12px;max-width:760px;border:3px solid var(--encre);box-shadow:10px 10px 0 var(--magenta)}
+  .demo .barre{display:flex;gap:6px;margin-bottom:4px}.demo .barre i{width:11px;height:11px;border-radius:50%;background:#4A4258}
+  .outil{justify-self:start;font-family:Montserrat;font-weight:800;font-size:13px;color:var(--creme);opacity:.85;border:2px dashed #6B6280;border-radius:12px;padding:8px 12px}
+  .inclus{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .inc{background:#fff;border:3px solid var(--encre);border-radius:18px;padding:18px}
+  .inc h3{font-size:21px;margin-bottom:4px}.inc p{color:var(--encre2);font-size:15px}
+  .inc .ic{font-size:26px;margin-bottom:8px;display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="#haut" aria-label="Plan par Plan">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="15" width="34" height="22" rx="4" fill="#17131F"/><g transform="rotate(-14 4 14)"><rect x="3" y="6" width="34" height="9" rx="2" fill="#17131F"/><path d="M8 6h6l-4 9H4zM20 6h6l-4 9h-6zM32 6h5v3l-2.7 6H28z" fill="#FF2D8E"/></g><circle cx="20" cy="26" r="5" fill="#FFD21F"/></svg>
+      PLAN PAR PLAN
+    </a>
+    <div class="droite">
+      <div class="langues" role="group" aria-label="Langue">
+        <button data-l="fr">FR</button><button data-l="en">EN</button><button data-l="de">DE</button><button data-l="it">IT</button><button data-l="es">ES</button>
+      </div>
+      <a class="mini" href="#offre" data-t="nav_pack">L'atelier</a>
+    </div>
+  </header>
+
+  <main id="haut">
+    <div class="hero">
+      <div>
+        <span class="kicker tag"><i></i><span data-t="kicker"></span></span>
+        <h1><span data-t="h1_a"></span> <span class="surligne" data-t="h1_b"></span> <span data-t="h1_c"></span> <span class="moi" data-t="h1_d"></span></h1>
+        <p class="sous" data-t="sous"></p>
+        <div class="actions">
+          <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement><span data-t="cta"></span> <span class="prix">29 €<span data-t="par_mois"></span></span></a>
+          <a class="btn blanc" href="#resultat" data-t="cta2"></a>
+        </div>
+        <p class="petit" data-t="petit"></p>
+      </div>
+      <div class="scene">
+        <div class="tel">
+          <span class="tc"><b>●</b> PLAN <span id="plan">01</span> · 9:16</span>
+          <video id="film" src="accroche.mp4" poster="accroche.webp" muted playsinline autoplay preload="auto"></video>
+          <button class="son" id="son" type="button" data-t="son_on"></button>
+          <div class="ui" aria-hidden="true"><span>♥</span><span>💬</span><span>↗</span></div>
+        </div>
+        <span class="post a" data-t="post_a"></span>
+        <span class="post b" data-t="post_b"></span>
+        <span class="post c" data-t="post_c"></span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="bande" aria-hidden="true"><div class="piste" id="piste"></div></div>
+
+<div class="wrap">
+  <section id="resultat">
+    <div class="titre apparait"><span class="tag" data-t="res_tag"></span><h2 data-t="res_h2"></h2><p data-t="res_p"></p></div>
+    <div class="galerie apparait">
+      <article class="carte-img"><video src="max.mp4" poster="max.webp" muted loop playsinline preload="none"></video><div><h3 data-t="c1"></h3><p data-t="c1p"></p></div></article>
+      <article class="carte-img"><video src="pruitt.mp4" poster="pruitt.webp" muted loop playsinline preload="none"></video><div><h3 data-t="c2"></h3><p data-t="c2p"></p></div></article>
+      <article class="carte-img"><video src="chef.mp4" poster="chef.webp" muted loop playsinline preload="none"></video><div><h3 data-t="c3"></h3><p data-t="c3p"></p></div></article>
+      <article class="carte-img"><video src="leo.mp4" poster="leo.webp" muted loop playsinline preload="none"></video><div><h3 data-t="c4"></h3><p data-t="c4p"></p></div></article>
+    </div>
+  </section>
+
+  <section id="comment">
+    <div class="titre apparait"><span class="tag" data-t="how_tag"></span><h2 data-t="how_h2"></h2></div>
+    <div class="etapes3 apparait">
+      <div class="e3"><span class="n">1</span><h3 data-t="s1t"></h3><p data-t="s1p"></p></div>
+      <div class="e3"><span class="n">2</span><h3 data-t="s2t"></h3><p data-t="s2p"></p></div>
+      <div class="e3"><span class="n">3</span><h3 data-t="s3t"></h3><p data-t="s3p"></p></div>
+    </div>
+    <div class="demo apparait" aria-hidden="true">
+      <div class="barre"><i></i><i></i><i></i></div>
+      <div class="bulle toi"><small>🙂</small><span data-t="demo_toi"></span></div>
+      <div class="bulle claude"><small>🎬 PLAN PAR PLAN</small><span data-t="demo_ia"></span></div>
+      <div class="outil" data-t="demo_outil"></div>
+    </div>
+  </section>
+
+  <section id="inclus">
+    <div class="titre apparait"><span class="tag" data-t="inc_tag"></span><h2 data-t="inc_h2"></h2></div>
+    <div class="inclus apparait">
+      <div class="inc"><span class="ic">🎬</span><h3 data-t="i1"></h3><p data-t="i1p"></p></div>
+      <div class="inc"><span class="ic">🧩</span><h3 data-t="i2"></h3><p data-t="i2p"></p></div>
+      <div class="inc"><span class="ic">✂️</span><h3 data-t="i3"></h3><p data-t="i3p"></p></div>
+      <div class="inc"><span class="ic">🌍</span><h3 data-t="i4"></h3><p data-t="i4p"></p></div>
+      <div class="inc"><span class="ic">⚡</span><h3 data-t="i5"></h3><p data-t="i5p"></p></div>
+    </div>
+  </section>
+
+  <section id="troupe">
+    <figure class="apparait" style="border:3px solid var(--encre);border-radius:var(--r);overflow:hidden;box-shadow:var(--ombre);background:#fff;max-width:900px">
+      <img src="troupe.webp" alt="" loading="lazy" style="width:100%;max-height:520px;object-fit:cover;object-position:top">
+      <figcaption style="font-size:14px;padding:12px 16px;border-top:3px solid var(--encre);color:var(--encre2)" data-t="troupe_cap"></figcaption>
+    </figure>
+  </section>
+
+  <section id="offre">
+    <div class="offre apparait">
+      <span class="tampon" data-t="tampon"></span>
+      <div>
+        <span class="tag" data-t="prix_tag"></span>
+        <h2 data-t="prix_h2"></h2>
+        <div class="montant">29 € <small data-t="par_mois"></small></div>
+        <p data-t="prix_p"></p>
+      </div>
+      <div>
+        <ul class="liste" style="margin-bottom:24px">
+          <li><span class="ic">✓</span><div><b data-t="i1"></b><span data-t="i1p"></span></div></li>
+          <li><span class="ic">✓</span><div><b data-t="i2"></b><span data-t="i2p"></span></div></li>
+          <li><span class="ic">✓</span><div><b data-t="i3"></b><span data-t="i3p"></span></div></li>
+          <li><span class="ic">✓</span><div><b data-t="i4"></b><span data-t="i4p"></span></div></li>
+        </ul>
+        <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement style="width:100%;background:var(--encre);color:var(--jaune);box-shadow:6px 6px 0 var(--magenta)"><span data-t="prix_btn"></span> <span class="prix" style="background:var(--jaune);color:var(--encre)">29 €<span data-t="par_mois"></span></span></a>
+        <p class="petit" style="margin-top:12px" data-t="prix_note"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="titre apparait"><span class="tag" data-t="faq_tag"></span><h2 data-t="faq_h2"></h2></div>
+    <div class="faq apparait">
+      <details><summary data-t="q0"></summary><p data-t="r0"></p></details>
+      <details><summary data-t="q1"></summary><p data-t="r1"></p></details>
+      <details><summary data-t="q2"></summary><p data-t="r2"></p></details>
+      <details><summary data-t="q3"></summary><p data-t="r3"></p></details>
+      <details><summary data-t="q4"></summary><p data-t="r4"></p></details>
+      <details><summary data-t="q5"></summary><p data-t="r5"></p></details>
+    </div>
+  </section>
+
+  <footer>
+    <strong style="font-family:Montserrat;font-weight:900;color:var(--encre)">PLAN PAR PLAN</strong>
+    <p style="margin-top:8px" data-t="pied"></p>
+    <div class="ligne">
+      <span>Éditeur : [NOM PRÉNOM] — EI — SIRET [À COMPLÉTER]</span>
+      <span>Contact : [E-MAIL À COMPLÉTER]</span>
+      <span>© <span id="annee">2026</span> Plan par Plan</span>
+    </div>
+  </footer>
+</div>
+
+<div class="collant" id="collant">
+  <b><span data-t="collant_t" style="display:block;font-size:14px;opacity:1"></span><span data-t="collant_s"></span></b>
+  <a class="btn" href="https://buy.stripe.com/14AeV6g3rfki5Y1gUF97G06" data-paiement><span data-t="cta"></span> · 29 €</a>
+</div>
+
+<script src="i18n.js"></script>
+<script>
+  function apresLangue(){
+    const b = T("bande"); const piste = document.getElementById("piste");
+    piste.innerHTML = b.concat(b).map(x => "<span>" + x + "</span>").join("");
+    son.textContent = film.muted ? T("son_on") : T("son_off");
+  }
+  document.querySelectorAll(".langues button").forEach(b => b.addEventListener("click", () => changerLangue(b.dataset.l)));
+  const film = document.getElementById("film"), num = document.getElementById("plan"), son = document.getElementById("son");
+  appliquerTextes(); apresLangue();
+  const ordre = ["accroche", "max", "pruitt", "chef", "officier", "leo"]; let i = 0;
+  film.addEventListener("ended", () => { i = (i + 1) % ordre.length; film.src = "" + ordre[i] + ".mp4"; film.poster = "" + ordre[i] + ".webp"; num.textContent = String(i + 1).padStart(2, "0"); film.play().catch(() => {}); });
+  film.play().catch(() => {});
+  son.addEventListener("click", () => { film.muted = !film.muted; son.textContent = film.muted ? T("son_on") : T("son_off"); film.play().catch(() => {}); });
+  const vio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause(); }), { threshold: .4 });
+  document.querySelectorAll(".carte-img video").forEach(v => vio.observe(v));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("vu"); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll(".apparait").forEach(e => io.observe(e));
+  const collant = document.getElementById("collant"), offre = document.getElementById("offre");
+  function majCollant(){ const r = offre.getBoundingClientRect(); collant.classList.toggle("vu", scrollY > innerHeight * .8 && !(r.top < innerHeight && r.bottom > 0)); }
+  addEventListener("scroll", majCollant, { passive: true }); majCollant();
+  document.getElementById("annee").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
