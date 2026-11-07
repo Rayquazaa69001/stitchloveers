@@ -35,7 +35,8 @@
   .btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--encre)}
   .btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--encre)}
   .btn.blanc{background:#fff}
-  .btn .prix{background:var(--encre);color:var(--jaune);border-radius:9px;padding:3px 9px;font-size:15px}
+  .btn .prix{background:var(--encre);color:var(--jaune);border-radius:9px;padding:3px 9px;font-size:15px;white-space:nowrap}
+  @media(max-width:520px){.offre .btn{flex-wrap:wrap;font-size:16px;padding:15px 16px;text-align:center}}
 
   /* Hero */
   .hero{display:grid;gap:34px;padding:18px 0 60px;align-items:center}
@@ -43,7 +44,7 @@
   .kicker{display:inline-flex;gap:8px;align-items:center;background:var(--encre);color:var(--creme);border-radius:999px;padding:7px 14px 7px 9px}
   .kicker i{width:10px;height:10px;border-radius:50%;background:var(--magenta);box-shadow:0 0 0 3px rgba(255,45,142,.3);animation:rec 1.2s infinite}
   @keyframes rec{50%{opacity:.25}}
-  .hero h1{font-size:clamp(44px,11vw,88px);margin:18px 0 18px}
+  .hero h1{font-size:clamp(34px,10.4vw,88px);margin:18px 0 18px}
   .hero h1 .surligne{position:relative;white-space:nowrap}
   .hero h1 .surligne::after{content:"";position:absolute;left:-.08em;right:-.08em;bottom:.04em;height:.36em;background:var(--jaune);z-index:-1;border-radius:6px;transform:rotate(-1.2deg)}
   .hero h1 .moi{color:var(--magenta)}
@@ -53,7 +54,7 @@
 
   /* Téléphone */
   .scene{position:relative;justify-self:center;width:min(330px,82vw)}
-  @media(max-width:899px){.hero{gap:22px;padding-top:4px}.scene{order:-1;width:min(232px,62vw)}.tel{border-width:8px;border-radius:30px;box-shadow:10px 10px 0 var(--magenta)}.post{font-size:11px;padding:6px 9px}.post.a{left:-58px}.post.b{right:-58px}.post.c{display:none}.post.b{top:58%;right:-70px}.post.a{top:12%}.son{font-size:11px;padding:6px 10px}}
+  @media(max-width:899px){.hero{gap:22px;padding-top:4px}.scene{order:-1;width:min(232px,62vw)}.tel{border-width:8px;border-radius:30px;box-shadow:10px 10px 0 var(--magenta)}.post{font-size:11px;padding:6px 9px}.post.a{left:-58px}.post.b{right:-58px}.post.c{display:none}.post.b{top:58%;right:-70px}.post.a{top:12%}.son{font-size:12px;padding:11px 14px}}
   .tel{position:relative;aspect-ratio:9/16;border-radius:38px;border:10px solid var(--encre);background:var(--encre);overflow:hidden;box-shadow:14px 14px 0 var(--magenta)}
   .tel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
   .son{position:absolute;left:12px;bottom:14px;z-index:4;font-family:Montserrat;font-weight:900;font-size:12px;border:2.5px solid var(--encre);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;box-shadow:3px 3px 0 var(--encre)}
@@ -149,7 +150,7 @@
   .offre{background:var(--jaune);border:3px solid var(--encre);border-radius:32px;box-shadow:10px 10px 0 var(--encre);padding:34px 24px;display:grid;gap:26px;position:relative;overflow:hidden}
   @media(min-width:900px){.offre{grid-template-columns:1.1fr .9fr;padding:46px}}
   .offre h2{font-size:clamp(36px,7vw,60px)}
-  .offre .montant{font-family:"Bricolage Grotesque";font-weight:800;font-size:76px;line-height:1;margin:14px 0 4px}
+  .offre .montant{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(56px,18vw,76px);line-height:1;margin:14px 0 4px;white-space:nowrap}
   .offre .montant small{font-size:22px;font-family:"DM Sans";font-weight:700}
   .offre .liste .ic{background:#fff}
   @media(max-width:899px){.offre{padding-top:66px}}
@@ -182,7 +183,10 @@
   .apparait.vu{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.apparait{opacity:1;transform:none}}
   .langues{display:flex;gap:4px;background:#fff;border:2.5px solid var(--encre);border-radius:999px;padding:3px}
-  .langues button{font-family:Montserrat;font-weight:900;font-size:11px;border:0;background:none;border-radius:999px;padding:5px 7px;cursor:pointer;color:var(--encre2)}
+  .langues button{font-family:Montserrat;font-weight:900;font-size:12px;border:0;background:none;border-radius:999px;padding:5px 7px;min-height:34px;min-width:34px;cursor:pointer;color:var(--encre2)}
+  .hero>*{min-width:0}
+  @media(max-width:899px){.son{padding:12px 14px}}
+  @media(max-width:340px){.hero h1 .surligne{white-space:normal}}
   .langues button.on{background:var(--encre);color:var(--jaune)}
   .top .droite{display:flex;gap:10px;align-items:center}
   @media(max-width:520px){.top .mini{display:none}}
@@ -343,6 +347,7 @@
 <script src="i18n.js"></script>
 <script>
   function apresLangue(){
+    document.title = T("doc_titre"); const md = document.querySelector('meta[name="description"]'); if (md) md.content = T("doc_desc");
     const b = T("bande"); const piste = document.getElementById("piste");
     piste.innerHTML = b.concat(b).map(x => "<span>" + x + "</span>").join("");
     son.textContent = film.muted ? T("son_on") : T("son_off");
