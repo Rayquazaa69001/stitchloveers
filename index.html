@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Plan par Plan — crée des vidéos Roblox avec l'IA</title>
-<meta name="description" content="Raconte ton histoire : l'atelier Plan par Plan l'écrit, la construit dans Roblox Studio, la filme et la monte avec toi.">
+<title>Stitch Lovers — crée des vidéos Roblox avec l'IA</title>
+<meta name="description" content="Raconte ton histoire : l'atelier Stitch Lovers l'écrit, la construit dans Roblox Studio, la filme et la monte avec toi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
@@ -26,7 +26,9 @@
 
   /* Barre du haut */
   .top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
-  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Montserrat,sans-serif;font-weight:900;letter-spacing:.06em;font-size:15px}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Montserrat,sans-serif;font-weight:900;letter-spacing:.06em;font-size:15px;white-space:nowrap}
+  @media(max-width:420px){.logo{font-size:13px;letter-spacing:.03em;gap:7px}}
+  @media(max-width:345px){.logo{white-space:normal;line-height:1.1}}
   .logo svg{width:34px;height:34px}
   .top .mini{font-family:Montserrat;font-weight:900;font-size:13px;text-decoration:none;border:2.5px solid var(--encre);border-radius:999px;padding:8px 14px;background:#fff;box-shadow:3px 3px 0 var(--encre)}
 
@@ -185,6 +187,7 @@
   .langues{display:flex;gap:4px;background:#fff;border:2.5px solid var(--encre);border-radius:999px;padding:3px}
   .langues button{font-family:Montserrat;font-weight:900;font-size:12px;border:0;background:none;border-radius:999px;padding:5px 7px;min-height:34px;min-width:34px;cursor:pointer;color:var(--encre2)}
   .hero>*{min-width:0}
+  @media(max-width:380px){.langues button{min-width:30px;padding:5px 4px}}
   @media(max-width:899px){.son{padding:12px 14px}}
   @media(max-width:340px){.hero h1 .surligne{white-space:normal}}
   .langues button.on{background:var(--encre);color:var(--jaune)}
@@ -209,9 +212,9 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <a class="logo" href="#haut" aria-label="Plan par Plan">
+    <a class="logo" href="#haut" aria-label="Stitch Lovers">
       <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="15" width="34" height="22" rx="4" fill="#17131F"/><g transform="rotate(-14 4 14)"><rect x="3" y="6" width="34" height="9" rx="2" fill="#17131F"/><path d="M8 6h6l-4 9H4zM20 6h6l-4 9h-6zM32 6h5v3l-2.7 6H28z" fill="#FF2D8E"/></g><circle cx="20" cy="26" r="5" fill="#FFD21F"/></svg>
-      PLAN PAR PLAN
+      STITCH LOVERS
     </a>
     <div class="droite">
       <div class="langues" role="group" aria-label="Langue">
@@ -271,7 +274,7 @@
     <div class="demo apparait" aria-hidden="true">
       <div class="barre"><i></i><i></i><i></i></div>
       <div class="bulle toi"><small>🙂</small><span data-t="demo_toi"></span></div>
-      <div class="bulle claude"><small>🎬 PLAN PAR PLAN</small><span data-t="demo_ia"></span></div>
+      <div class="bulle claude"><small>🎬 STITCH LOVERS</small><span data-t="demo_ia"></span></div>
       <div class="outil" data-t="demo_outil"></div>
     </div>
   </section>
@@ -329,12 +332,12 @@
   </section>
 
   <footer>
-    <strong style="font-family:Montserrat;font-weight:900;color:var(--encre)">PLAN PAR PLAN</strong>
+    <strong style="font-family:Montserrat;font-weight:900;color:var(--encre)">STITCH LOVERS</strong>
     <p style="margin-top:8px" data-t="pied"></p>
     <div class="ligne">
       <span>Éditeur : [NOM PRÉNOM] — EI — SIRET [À COMPLÉTER]</span>
       <span>Contact : [E-MAIL À COMPLÉTER]</span>
-      <span>© <span id="annee">2026</span> Plan par Plan</span>
+      <span>© <span id="annee">2026</span> Stitch Lovers</span>
     </div>
   </footer>
 </div>
